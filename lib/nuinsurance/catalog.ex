@@ -9,4 +9,8 @@ defmodule Nuinsurance.Catalog do
     |> order_by([product], asc: product.id)
     |> Repo.all()
   end
+
+  def get_product(id) do
+    Repo.get(Product, id)
+  end
 end

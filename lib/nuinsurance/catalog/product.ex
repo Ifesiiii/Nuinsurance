@@ -5,6 +5,10 @@ defmodule Nuinsurance.Catalog.Product do
   schema "products" do
     field :name, :string
     field :description, :string
+    field :coverage, :string
+    field :exclusions, :string
+    field :eligibility, :string
+    field :conditions, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -12,7 +16,14 @@ defmodule Nuinsurance.Catalog.Product do
   @doc false
   def changeset(product, attrs) do
     product
-    |> cast(attrs, [:name, :description])
+    |> cast(attrs, [
+      :name,
+      :description,
+      :coverage,
+      :exclusions,
+      :eligibility,
+      :conditions
+      ])
     |> validate_required([:name, :description])
   end
 end

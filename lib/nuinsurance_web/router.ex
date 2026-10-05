@@ -18,7 +18,17 @@ defmodule NuinsuranceWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+  end
+
+  scope "/api", NuinsuranceWeb do
+    pipe_through :api
+
     get "/products", ProductController, :index
+    get "/products/:id", ProductController, :show
+
+     post "/products/:product_id/quote_requests",
+       QuoteRequestController,
+       :create
   end
 
   # Other scopes may use custom stacks.
