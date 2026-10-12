@@ -18,6 +18,7 @@ const submitting = ref(false)
 const submitted = ref(false)
 const errors = ref({})
 const errorMessage = ref('')
+const trackingPath = ref('')
 
 async function submitRequest() {
   if (submitting.value) return
@@ -62,6 +63,7 @@ async function submitRequest() {
       throw new Error(`Request failed: ${response.status}`)
     }
 
+    trackingPath.value = result.data.tracking_path
     submitted.value = true
   } catch (err) {
     console.error('Quote request failed:', err)
@@ -81,13 +83,31 @@ async function submitRequest() {
 
     <div
       v-if="submitted"
-      class="rounded-xl border border-green-200 bg-green-50 p-6 text-green-900"
+      class="rounded-xl border grid border-green-200 bg-green-50 p-6 text-green-900"
       role="status"
     >
       <h3 class="mb-2 text-lg font-bold">Request submitted</h3>
       <p class="leading-7">
         Your quote request has been saved. Pricing will be provided
         after your request is reviewed.
+      </p>
+      <RouterLink
+        to="/products"
+        class="mt-5 inline-block rounded-lg bg-[#15233b] px-5 py-3 font-semibold text-white hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
+      >
+        Explore other products
+      </RouterLink>
+
+      <RouterLink
+        v-if="trackingPath"
+        :to="trackingPath"
+        class="mt-5 inline-block rounded-lg bg-[#15233b] px-5 py-3 font-semibold text-white hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
+      >
+        View request progress
+      </RouterLink>
+
+      <p class="mt-3 text-sm">
+      Open and bookmark your private tracking page to check this request later.
       </p>
     </div>
 
