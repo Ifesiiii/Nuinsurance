@@ -15,15 +15,17 @@ defmodule NuinsuranceWeb.QuoteRequestController do
            Catalog.get_product(product_id) do
       case Quotes.create_quote_request(product, attrs) do
         {:ok, quote_request} ->
-          conn
-          |> put_status(:created)
-          |> json(%{
-            data: %{
-              id: quote_request.id,
-              status: quote_request.status
-            },
-            message: "Your quote request has been submitted."
-          })
+  conn
+  |> put_resp_header("cache-control", "no-store")
+  |> put_status(:created)
+  |> json(%{
+    data: %{
+      id: quote_request.id,
+      status: quote_request.status,
+      tracking_path: "/requests/#{quote_request.tracking_token}"
+    },
+    message: "Your quote request has been submitted."
+  })
 
         {:error, changeset} ->
           errors =
@@ -50,4 +52,40 @@ defmodule NuinsuranceWeb.QuoteRequestController do
     |> put_status(:bad_request)
     |> json(%{error: "Expected a quote_request object."})
   end
+  def track(conn, %{"token" => token}) do
+  conn = put_resp_header(conn, "cache-control", "no-store")
+
+  case Quotes.get_request_by_tracking_token(token) do
+    nil ->
+      conn
+      |> put_status(:not_found)
+      |> json(%{error: "Request not found"})
+
+    request ->
+      json(conn, %{
+        data: %{
+          id: request.id,
+          product_name: request.product.name,
+          status: request.status,
+          submitted_at: request.inserted_at,
+          response: response_data(request)
+        }
+      })
+  end
+end
+
+defp response_data(%{status: "responded"} = request) do
+  %{
+    amount: Decimal.to_string(request.quote_amount, :normal),
+    currency: request.quote_currency,
+    coverage_period: request.coverage_period,
+    message: request.broker_response,
+    expires_on: request.quote_expires_on,
+    responded_at: request.responded_at,
+    expired:
+      Date.compare(request.quote_expires_on, Date.utc_today()) == :lt
+  }
+end
+
+defp response_data(_request), do: nil
 end

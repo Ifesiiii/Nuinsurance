@@ -26,9 +26,13 @@ defmodule NuinsuranceWeb.Router do
     get "/products", ProductController, :index
     get "/products/:id", ProductController, :show
 
-     post "/products/:product_id/quote_requests",
-       QuoteRequestController,
-       :create
+    post "/products/:product_id/quote_requests",
+      QuoteRequestController,
+      :create
+
+    get "/quote_requests/tracks/:token",
+      QuoteRequestController,
+      :track
   end
 
   # Other scopes may use custom stacks.
