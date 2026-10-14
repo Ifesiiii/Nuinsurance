@@ -7,6 +7,12 @@
 # General application configuration
 import Config
 
+import Config
+
+config :nuinsurance, :broker_auth,
+  username: System.get_env("BROKER_USERNAME"),
+  password: System.get_env("BROKER_PASSWORD")
+
 config :nuinsurance,
   ecto_repos: [Nuinsurance.Repo],
   generators: [timestamp_type: :utc_datetime]

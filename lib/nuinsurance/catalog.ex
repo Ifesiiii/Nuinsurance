@@ -13,4 +13,10 @@ defmodule Nuinsurance.Catalog do
   def get_product(id) do
     Repo.get(Product, id)
   end
+
+  def create_product(attrs) do
+  %Product{}
+  |> Product.changeset(attrs)
+  |> Repo.insert()
+end
 end

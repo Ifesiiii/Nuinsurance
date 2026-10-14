@@ -14,6 +14,10 @@ defmodule NuinsuranceWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :broker do
+  plug NuinsuranceWeb.Plugs.BrokerAuth
+end
+
   scope "/", NuinsuranceWeb do
     pipe_through :browser
 
@@ -34,6 +38,13 @@ defmodule NuinsuranceWeb.Router do
       QuoteRequestController,
       :track
   end
+
+  scope "/api/broker", NuinsuranceWeb do
+  pipe_through [:api, :broker]
+
+  post "/products", BrokerProductController, :create
+end
+
 
   # Other scopes may use custom stacks.
   # scope "/api", NuinsuranceWeb do
