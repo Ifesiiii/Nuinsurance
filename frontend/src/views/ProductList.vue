@@ -55,25 +55,11 @@ onMounted(loadProducts)
       >
         nuinsurance
       </h1>
-
-      <div class="max-w-[730px] space-y-5 text-base leading-8 text-[#52627b] sm:text-lg">
-        <p>
-          Insurance starts with understanding what matters to you. At
-          nuinsurance, we bring health, car, pet and home insurance options
-          into one place, making it easier to explore the cover you need.
-        </p>
-
-        <p>
-          Whether you are thinking about your health, your next journey or
-          the place you call home, start with the plans below. Take your
-          time, explore your options and find a starting point that suits you.
-        </p>
-      </div>
     </section>
 
     <section aria-labelledby="plans-title">
       <h2 id="plans-title" class="mb-6 text-2xl font-bold tracking-tight">
-        Explore our insurance plans
+        Choose your insurance type
       </h2>
 
       <p
